@@ -94,10 +94,11 @@ dependencies {
     implementation(libs.compose.layout)
     implementation(libs.compose.material)
     implementation(libs.compose.materialIconsExtended)
-    implementation(libs.compose.navigation)
     implementation(libs.compose.runtime)
     implementation(libs.compose.runtimeLivedata)
     implementation(libs.compose.toolingPreview)
+
+    implementation(libs.bundles.voyager)
 
     implementation(libs.kotlin.stdlib)
     implementation(libs.kotlin.reflect)

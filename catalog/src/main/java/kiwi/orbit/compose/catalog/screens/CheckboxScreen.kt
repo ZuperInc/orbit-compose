@@ -18,13 +18,24 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import cafe.adriel.voyager.core.screen.Screen
+import cafe.adriel.voyager.navigator.LocalNavigator
+import cafe.adriel.voyager.navigator.currentOrThrow
 import kiwi.orbit.compose.catalog.Screen
 import kiwi.orbit.compose.ui.controls.Checkbox
 import kiwi.orbit.compose.ui.controls.CheckboxField
 import kiwi.orbit.compose.ui.controls.Text
 
+object CheckboxScreen : Screen {
+    @Composable
+    override fun Content() {
+        val navigator = LocalNavigator.currentOrThrow
+        CheckboxScreen(navigator::pop)
+    }
+}
+
 @Composable
-fun CheckboxScreen(onNavigateUp: () -> Unit) {
+private fun CheckboxScreen(onNavigateUp: () -> Unit) {
     Screen(
         title = "Checkbox Button",
         onNavigateUp = onNavigateUp,

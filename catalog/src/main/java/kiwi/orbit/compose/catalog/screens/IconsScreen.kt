@@ -14,6 +14,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import cafe.adriel.voyager.core.screen.Screen
+import cafe.adriel.voyager.navigator.LocalNavigator
+import cafe.adriel.voyager.navigator.currentOrThrow
 import kiwi.orbit.compose.catalog.Screen
 import kiwi.orbit.compose.icons.Icons
 import kiwi.orbit.compose.ui.OrbitTheme
@@ -22,8 +25,16 @@ import kiwi.orbit.compose.ui.controls.Text
 import kiwi.orbit.compose.ui.utils.plus
 import kotlin.reflect.full.memberProperties
 
+object IconsScreen : Screen {
+    @Composable
+    override fun Content() {
+        val navigator = LocalNavigator.currentOrThrow
+        IconsScreen(navigator::pop)
+    }
+}
+
 @Composable
-fun IconsScreen(onNavigateUp: () -> Unit) {
+private fun IconsScreen(onNavigateUp: () -> Unit) {
     Screen(
         title = "Icons",
         onNavigateUp = onNavigateUp,

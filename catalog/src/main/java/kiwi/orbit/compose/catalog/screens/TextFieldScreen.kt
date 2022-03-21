@@ -29,6 +29,9 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import cafe.adriel.voyager.core.screen.Screen
+import cafe.adriel.voyager.navigator.LocalNavigator
+import cafe.adriel.voyager.navigator.currentOrThrow
 import kiwi.orbit.compose.catalog.Screen
 import kiwi.orbit.compose.icons.Icons
 import kiwi.orbit.compose.ui.controls.ButtonPrimary
@@ -37,8 +40,16 @@ import kiwi.orbit.compose.ui.controls.PasswordTextField
 import kiwi.orbit.compose.ui.controls.Text
 import kiwi.orbit.compose.ui.controls.TextField
 
+object TextFieldScreen : Screen {
+    @Composable
+    override fun Content() {
+        val navigator = LocalNavigator.currentOrThrow
+        TextFieldScreen(navigator::pop)
+    }
+}
+
 @Composable
-fun TextFieldScreen(onNavigateUp: () -> Unit) {
+private fun TextFieldScreen(onNavigateUp: () -> Unit) {
     Screen(
         title = "Text Field",
         onNavigateUp = onNavigateUp,

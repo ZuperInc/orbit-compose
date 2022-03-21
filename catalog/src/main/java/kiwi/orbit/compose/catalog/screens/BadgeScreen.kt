@@ -13,6 +13,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import cafe.adriel.voyager.core.screen.Screen
+import cafe.adriel.voyager.navigator.LocalNavigator
+import cafe.adriel.voyager.navigator.currentOrThrow
 import kiwi.orbit.compose.catalog.Screen
 import kiwi.orbit.compose.icons.Icons
 import kiwi.orbit.compose.ui.controls.BadgeCritical
@@ -29,8 +32,16 @@ import kiwi.orbit.compose.ui.controls.BadgeWarningSubtle
 import kiwi.orbit.compose.ui.controls.Icon
 import kiwi.orbit.compose.ui.controls.Text
 
+object BadgeScreen : Screen {
+    @Composable
+    override fun Content() {
+        val navigator = LocalNavigator.currentOrThrow
+        BadgeScreen(navigator::pop)
+    }
+}
+
 @Composable
-fun BadgeScreen(onNavigateUp: () -> Unit) {
+private fun BadgeScreen(onNavigateUp: () -> Unit) {
     Screen(
         title = "Badge",
         onNavigateUp = onNavigateUp,

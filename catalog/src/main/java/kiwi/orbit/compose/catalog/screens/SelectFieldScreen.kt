@@ -23,6 +23,9 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import cafe.adriel.voyager.core.screen.Screen
+import cafe.adriel.voyager.navigator.LocalNavigator
+import cafe.adriel.voyager.navigator.currentOrThrow
 import coil.annotation.ExperimentalCoilApi
 import coil.compose.rememberImagePainter
 import coil.size.OriginalSize
@@ -33,8 +36,16 @@ import kiwi.orbit.compose.ui.OrbitTheme
 import kiwi.orbit.compose.ui.controls.SelectField
 import kiwi.orbit.compose.ui.controls.Text
 
+object SelectFieldScreen : Screen {
+    @Composable
+    override fun Content() {
+        val navigator = LocalNavigator.currentOrThrow
+        SelectFieldScreen(navigator::pop)
+    }
+}
+
 @Composable
-fun SelectFieldScreen(onNavigateUp: () -> Unit) {
+private fun SelectFieldScreen(onNavigateUp: () -> Unit) {
     Screen(
         title = "Select Field",
         onNavigateUp = onNavigateUp,

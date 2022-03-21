@@ -28,6 +28,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
+import cafe.adriel.voyager.core.screen.Screen
+import cafe.adriel.voyager.navigator.LocalNavigator
+import cafe.adriel.voyager.navigator.currentOrThrow
 import com.google.accompanist.insets.navigationBarsPadding
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
@@ -54,9 +57,17 @@ import kiwi.orbit.compose.ui.controls.Text
 import kiwi.orbit.compose.ui.controls.TopAppBar
 import kotlinx.coroutines.launch
 
+object ButtonScreen : Screen {
+    @Composable
+    override fun Content() {
+        val navigator = LocalNavigator.currentOrThrow
+        ButtonScreen(navigator::pop)
+    }
+}
+
 @OptIn(ExperimentalPagerApi::class)
 @Composable
-fun ButtonScreen(onNavigateUp: () -> Unit) {
+private fun ButtonScreen(onNavigateUp: () -> Unit) {
     val state = rememberPagerState(0)
     val scope = rememberCoroutineScope()
     Scaffold(

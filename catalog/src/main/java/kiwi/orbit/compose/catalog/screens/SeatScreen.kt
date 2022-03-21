@@ -15,6 +15,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import cafe.adriel.voyager.core.screen.Screen
+import cafe.adriel.voyager.navigator.LocalNavigator
+import cafe.adriel.voyager.navigator.currentOrThrow
 import kiwi.orbit.compose.catalog.Screen
 import kiwi.orbit.compose.ui.controls.SeatExtraLegroom
 import kiwi.orbit.compose.ui.controls.SeatLegendExtraLegroom
@@ -24,8 +27,16 @@ import kiwi.orbit.compose.ui.controls.SeatStandard
 import kiwi.orbit.compose.ui.controls.SeatUnavailable
 import kiwi.orbit.compose.ui.controls.Text
 
+object SeatScreen : Screen {
+    @Composable
+    override fun Content() {
+        val navigator = LocalNavigator.currentOrThrow
+        SeatScreen(navigator::pop)
+    }
+}
+
 @Composable
-fun SeatScreen(onNavigateUp: () -> Unit) {
+private fun SeatScreen(onNavigateUp: () -> Unit) {
     Screen(
         title = "Seat",
         onNavigateUp = onNavigateUp,

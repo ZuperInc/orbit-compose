@@ -26,6 +26,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import cafe.adriel.voyager.core.screen.Screen
+import cafe.adriel.voyager.navigator.LocalNavigator
+import cafe.adriel.voyager.navigator.currentOrThrow
 import kiwi.orbit.compose.catalog.Screen
 import kiwi.orbit.compose.catalog.components.CustomPlaceholder
 import kiwi.orbit.compose.icons.Icons
@@ -38,8 +41,16 @@ import kiwi.orbit.compose.ui.controls.Icon
 import kiwi.orbit.compose.ui.controls.Stepper
 import kiwi.orbit.compose.ui.controls.Text
 
+object ChoiceTileScreen : Screen {
+    @Composable
+    override fun Content() {
+        val navigator = LocalNavigator.currentOrThrow
+        ChoiceTileScreen(navigator::pop)
+    }
+}
+
 @Composable
-fun ChoiceTileScreen(onNavigateUp: () -> Unit) {
+private fun ChoiceTileScreen(onNavigateUp: () -> Unit) {
     Screen(
         title = "ChoiceTile",
         onNavigateUp = onNavigateUp,

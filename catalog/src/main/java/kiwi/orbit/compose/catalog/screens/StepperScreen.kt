@@ -14,11 +14,22 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import cafe.adriel.voyager.core.screen.Screen
+import cafe.adriel.voyager.navigator.LocalNavigator
+import cafe.adriel.voyager.navigator.currentOrThrow
 import kiwi.orbit.compose.catalog.Screen
 import kiwi.orbit.compose.ui.controls.Stepper
 
+object StepperScreen : Screen {
+    @Composable
+    override fun Content() {
+        val navigator = LocalNavigator.currentOrThrow
+        StepperScreen(navigator::pop)
+    }
+}
+
 @Composable
-fun StepperScreen(onNavigateUp: () -> Unit) {
+private fun StepperScreen(onNavigateUp: () -> Unit) {
     Screen(
         title = "Stepper",
         onNavigateUp = onNavigateUp,

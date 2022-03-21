@@ -9,12 +9,26 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import cafe.adriel.voyager.core.screen.Screen
+import cafe.adriel.voyager.navigator.LocalNavigator
+import cafe.adriel.voyager.navigator.currentOrThrow
 import kiwi.orbit.compose.catalog.Screen
 import kiwi.orbit.compose.ui.controls.ButtonPrimary
 import kiwi.orbit.compose.ui.controls.Text
 
+object DialogsScreen : Screen {
+    @Composable
+    override fun Content() {
+        val navigator = LocalNavigator.currentOrThrow
+        DialogsScreen(
+            onNavigateUp = navigator::pop,
+            onShowMaterialDialog = { navigator.push(DialogsMaterialDialog) }
+        )
+    }
+}
+
 @Composable
-fun DialogsScreen(
+private fun DialogsScreen(
     onNavigateUp: () -> Unit,
     onShowMaterialDialog: () -> Unit,
 ) {

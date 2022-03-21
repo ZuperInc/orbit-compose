@@ -13,14 +13,32 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import cafe.adriel.voyager.core.screen.Screen
+import cafe.adriel.voyager.core.screen.ScreenKey
+import cafe.adriel.voyager.navigator.LocalNavigator
+import cafe.adriel.voyager.navigator.currentOrThrow
 import kiwi.orbit.compose.ui.OrbitTheme
 import kiwi.orbit.compose.ui.controls.ButtonSecondary
 import kiwi.orbit.compose.ui.controls.Scaffold
 import kiwi.orbit.compose.ui.controls.Text
 import kiwi.orbit.compose.ui.controls.TopAppBar
 
+data class TopAppBarScreen(private val demoId: Int = 0) : Screen {
+    override val key: ScreenKey = TopAppBarScreen::class.qualifiedName!! + demoId.toString()
+
+    @Composable
+    override fun Content() {
+        val navigator = LocalNavigator.currentOrThrow
+        TopAppBarScreen(
+            demoId = demoId,
+            onNavigateUp = navigator::pop,
+            onShowTopAppBarDemo = { navigator.push(TopAppBarScreen(it)) },
+        )
+    }
+}
+
 @Composable
-fun TopAppBarScreen(
+private fun TopAppBarScreen(
     demoId: Int,
     onNavigateUp: () -> Unit,
     onShowTopAppBarDemo: (Int) -> Unit,

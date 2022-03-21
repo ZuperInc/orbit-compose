@@ -29,7 +29,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
-import kiwi.orbit.compose.catalog.MainActions
+import cafe.adriel.voyager.core.screen.Screen
+import cafe.adriel.voyager.navigator.LocalNavigator
+import cafe.adriel.voyager.navigator.currentOrThrow
+import kiwi.orbit.compose.catalog.LightTheme
 import kiwi.orbit.compose.icons.Icons
 import kiwi.orbit.compose.ui.OrbitTheme
 import kiwi.orbit.compose.ui.controls.Card
@@ -41,35 +44,46 @@ import kiwi.orbit.compose.ui.controls.TopAppBarLarge
 import kiwi.orbit.compose.ui.foundation.ProvideMergedTextStyle
 import androidx.compose.material.icons.Icons.Rounded as MaterialIcons
 
+object MainScreen : Screen {
+    @Composable
+    override fun Content() {
+        val navigator = LocalNavigator.currentOrThrow
+        MainScreen(
+            onNavigate = { navigator.push(it) },
+            onToggleTheme = { LightTheme.value = !LightTheme.value },
+        )
+    }
+}
+
 @Composable
 fun MainScreen(
-    actions: MainActions,
+    onNavigate: (screen: Screen) -> Unit,
     onToggleTheme: () -> Unit,
 ) {
-    val foundation = listOf<Triple<String, @Composable () -> Unit, () -> Unit>>(
-        Triple("Colors", { Icon(MaterialIcons.Palette, null) }, actions::showColors),
-        Triple("Icons", { Icon(Icons.Airplane, null) }, actions::showIcons),
-        Triple("Illustrations", { Icon(Icons.Gallery, null) }, actions::showIllustrations),
-        Triple("Typography", { Icon(MaterialIcons.FormatSize, null) }, actions::showTypography),
+    val foundation = listOf<Triple<String, @Composable () -> Unit, Screen>>(
+        Triple("Colors", { Icon(MaterialIcons.Palette, null) }, ColorsScreen),
+        Triple("Icons", { Icon(Icons.Airplane, null) }, IconsScreen),
+        Triple("Illustrations", { Icon(Icons.Gallery, null) }, IllustrationsScreen),
+        Triple("Typography", { Icon(MaterialIcons.FormatSize, null) }, TypographyScreen),
     )
 
-    val controls = listOf<Triple<String, @Composable () -> Unit, () -> Unit>>(
-        Triple("Alert", { Icon(Icons.Alert, null) }, actions::showAlert),
-        Triple("Badge", { Icon(Icons.Deals, null) }, actions::showBadge),
-        Triple("Button", { Icon(MaterialIcons.SmartButton, null) }, actions::showButton),
-        Triple("Cards / Tiles", { Icon(MaterialIcons.Article, null) }, actions::showCards),
-        Triple("Checkbox", { Icon(MaterialIcons.CheckBox, null) }, actions::showCheckbox),
-        Triple("Choice Tile", { Icon(MaterialIcons.Ballot, null) }, actions::showChoiceTile),
-        Triple("Dialogs", { Icon(Icons.Chat, null) }, actions::showDialogs),
-        Triple("Radio", { Icon(Icons.CircleFilled, null) }, actions::showRadio),
-        Triple("Seat", { Icon(Icons.Seat, null) }, actions::showSeat),
-        Triple("Select Field", { Icon(MaterialIcons.MenuOpen, null) }, actions::showSelectField),
-        Triple("Stepper", { Icon(Icons.PlusCircle, null) }, actions::showStepper),
-        Triple("Switch", { Icon(MaterialIcons.ToggleOn, null) }, actions::showSwitch),
-        Triple("Tag", { Icon(MaterialIcons.LabelImportant, null) }, actions::showTag),
-        Triple("Text Field", { Icon(MaterialIcons.Keyboard, null) }, actions::showTextField),
-        Triple("Toast", { Icon(MaterialIcons.Announcement, null) }, actions::showToast),
-        Triple("TopAppBar", { Icon(MaterialIcons.WebAsset, null) }, { actions.showTopAppBar() }),
+    val controls = listOf<Triple<String, @Composable () -> Unit, Screen>>(
+        Triple("Alert", { Icon(Icons.Alert, null) }, AlertScreen),
+        Triple("Badge", { Icon(Icons.Deals, null) }, BadgeScreen),
+        Triple("Button", { Icon(MaterialIcons.SmartButton, null) }, ButtonScreen),
+        Triple("Cards / Tiles", { Icon(MaterialIcons.Article, null) }, CardsScreen),
+        Triple("Checkbox", { Icon(MaterialIcons.CheckBox, null) }, CheckboxScreen),
+        Triple("Choice Tile", { Icon(MaterialIcons.Ballot, null) }, ChoiceTileScreen),
+        Triple("Dialogs", { Icon(Icons.Chat, null) }, DialogsScreen),
+        Triple("Radio", { Icon(Icons.CircleFilled, null) }, RadioScreen),
+        Triple("Seat", { Icon(Icons.Seat, null) }, SeatScreen),
+        Triple("Select Field", { Icon(MaterialIcons.MenuOpen, null) }, SelectFieldScreen),
+        Triple("Stepper", { Icon(Icons.PlusCircle, null) }, StepperScreen),
+        Triple("Switch", { Icon(MaterialIcons.ToggleOn, null) }, SwitchScreen),
+        Triple("Tag", { Icon(MaterialIcons.LabelImportant, null) }, TagScreen),
+        Triple("Text Field", { Icon(MaterialIcons.Keyboard, null) }, TextFieldScreen),
+        Triple("Toast", { Icon(MaterialIcons.Announcement, null) }, ToastScreen),
+        Triple("TopAppBar", { Icon(MaterialIcons.WebAsset, null) }, TopAppBarScreen()),
     )
 
     Scaffold(
@@ -93,8 +107,8 @@ fun MainScreen(
                     .padding(contentPadding)
             ) {
                 Spacer(Modifier.size(16.dp))
-                CardsList("Foundation", foundation, columns)
-                CardsList("Controls", controls, columns)
+                CardsList("Foundation", foundation, columns, onNavigate)
+                CardsList("Controls", controls, columns, onNavigate)
             }
         }
     }
@@ -104,8 +118,9 @@ fun MainScreen(
 @Composable
 private fun CardsList(
     title: String,
-    items: List<Triple<String, @Composable () -> Unit, () -> Unit>>,
+    items: List<Triple<String, @Composable () -> Unit, Screen>>,
     columns: Int,
+    onNavigate: (screen: Screen) -> Unit,
 ) {
     Text(
         text = title,
@@ -116,7 +131,7 @@ private fun CardsList(
     Column(Modifier.padding(horizontal = 12.dp, vertical = 8.dp)) {
         for (rowItems in items.chunked(columns)) {
             Row {
-                Items(rowItems)
+                Items(rowItems, onNavigate)
                 val missingColumns = columns - rowItems.size
                 if (missingColumns > 0) {
                     Spacer(Modifier.weight(missingColumns.toFloat()))
@@ -127,9 +142,12 @@ private fun CardsList(
 }
 
 @Composable
-private fun RowScope.Items(rowItems: List<Triple<String, @Composable () -> Unit, () -> Unit>>) {
+private fun RowScope.Items(
+    rowItems: List<Triple<String, @Composable () -> Unit, Screen>>,
+    onNavigate: (screen: Screen) -> Unit,
+) {
     for (item in rowItems) {
-        Item(item.first, item.second, item.third)
+        Item(item.first, item.second) { onNavigate(item.third) }
     }
 }
 

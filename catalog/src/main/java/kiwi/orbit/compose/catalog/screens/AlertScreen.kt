@@ -29,6 +29,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
+import cafe.adriel.voyager.core.screen.Screen
+import cafe.adriel.voyager.navigator.LocalNavigator
+import cafe.adriel.voyager.navigator.currentOrThrow
 import com.google.accompanist.insets.navigationBarsPadding
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
@@ -49,9 +52,17 @@ import kiwi.orbit.compose.ui.controls.ButtonSecondary
 import kiwi.orbit.compose.ui.controls.Text
 import kotlinx.coroutines.launch
 
+object AlertScreen : Screen {
+    @Composable
+    override fun Content() {
+        val navigator = LocalNavigator.currentOrThrow
+        AlertScreen(navigator::pop)
+    }
+}
+
 @OptIn(ExperimentalPagerApi::class)
 @Composable
-fun AlertScreen(onNavigateUp: () -> Unit) {
+private fun AlertScreen(onNavigateUp: () -> Unit) {
     Screen(
         title = "Alert",
         onNavigateUp = onNavigateUp,

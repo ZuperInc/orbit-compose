@@ -18,6 +18,7 @@ coil = "1.4.0"
 compose-main = "1.1.1"
 compose-navigation = "2.4.1"
 square-kotlinPoet = "1.10.2"
+voyager = "1.0.0-beta16"
 
 [libraries]
 
@@ -50,5 +51,14 @@ compose-uiTest = { module = "androidx.compose.ui:ui-test-junit4", version.ref = 
 compose-uiUtil = { module = "androidx.compose.ui:ui-util", version.ref = "compose-main" }
 compose-viewBinding = { module = "androidx.compose.ui:ui-viewbinding", version.ref = "compose-main" }
 square-kotlinPoet = { module = "com.squareup:kotlinpoet", version.ref = "square-kotlinPoet" }
+voyager-navigator = { module = "cafe.adriel.voyager:voyager-navigator", version.ref = "voyager" }
+voyager-bottomsheet-navigator = { module = "cafe.adriel.voyager:voyager-bottom-sheet-navigator", version.ref = "voyager" }
+voyager-transitions = { module = "cafe.adriel.voyager:voyager-transitions", version.ref = "voyager" }
 
 [bundles]
+
+voyager = [
+    "voyager-navigator",
+    "voyager-bottomsheet-navigator",
+    "voyager-transitions"
+]

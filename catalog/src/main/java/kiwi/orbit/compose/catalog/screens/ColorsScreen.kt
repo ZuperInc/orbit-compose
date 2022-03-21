@@ -18,6 +18,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.takeOrElse
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import cafe.adriel.voyager.core.screen.Screen
+import cafe.adriel.voyager.navigator.LocalNavigator
+import cafe.adriel.voyager.navigator.currentOrThrow
 import kiwi.orbit.compose.catalog.Screen
 import kiwi.orbit.compose.ui.OrbitTheme
 import kiwi.orbit.compose.ui.controls.Card
@@ -26,8 +29,16 @@ import kiwi.orbit.compose.ui.foundation.BundleColors
 import kiwi.orbit.compose.ui.foundation.FeatureColors
 import kiwi.orbit.compose.ui.foundation.contentColorFor
 
+object ColorsScreen : Screen {
+    @Composable
+    override fun Content() {
+        val navigator = LocalNavigator.currentOrThrow
+        ColorsScreen(navigator::pop)
+    }
+}
+
 @Composable
-fun ColorsScreen(onNavigateUp: () -> Unit) {
+private fun ColorsScreen(onNavigateUp: () -> Unit) {
     Screen(
         title = "Colors",
         onNavigateUp = onNavigateUp,
