@@ -174,7 +174,7 @@ internal fun ListChoicePreview() {
                 ListChoice(
                     onClick = {},
                     icon = { Icon(Icons.Accommodation, contentDescription = null) },
-                    trailingIcon = { Icon(Icons.ChevronRight, contentDescription = null) },
+                    trailingIcon = { Icon(Icons.ChevronEnd, contentDescription = null) },
                 ) {
                     Text("ListChoice title")
                 }
@@ -187,7 +187,7 @@ internal fun ListChoicePreview() {
                                 Text("1")
                             }
                             Spacer(modifier = Modifier.width(8.dp))
-                            Icon(Icons.ChevronRight, contentDescription = null)
+                            Icon(Icons.ChevronEnd, contentDescription = null)
                         }
                     },
                     description = { Text("Further description") },

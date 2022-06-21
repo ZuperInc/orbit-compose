@@ -38,8 +38,10 @@ android {
     buildTypes {
         debug {
             applicationIdSuffix = ".debug"
+            isPseudoLocalesEnabled = true
         }
         release {
+            isPseudoLocalesEnabled = true
             isMinifyEnabled = true
             isShrinkResources = true
             signingConfig = signingConfigs.getByName("release")
